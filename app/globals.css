@@ -4,16 +4,24 @@
   --color-ink: #1e1b18;
   --color-ink-soft: #5c554e;
   --color-ink-faint: #8c857d;
+  --color-night: #120d0a;
+  --color-night-soft: #1d1512;
+  --color-cream: #f7efe3;
+  --color-cream-soft: #cdbfae;
   --color-paper: #fbf6ee;
   --color-surface: #ffffff;
   --color-orange: #d9501c;
+  --color-orange-bright: #f2681f;
   --color-orange-deep: #b23e12;
   --color-orange-wash: #fbeadf;
   --color-green: #2f8c57;
+  --color-green-bright: #4ade80;
   --color-green-wash: #e4f1e8;
   --color-gold: #c8901f;
+  --color-gold-bright: #f5b83d;
   --color-gold-wash: #f6ebcf;
   --color-red: #c0392b;
+  --color-red-bright: #f87171;
   --color-red-wash: #f9e4e1;
   --color-line: #ece2d4;
   --color-line-soft: #f3ece1;
@@ -25,9 +33,36 @@
 
 body {
   font-family: var(--font-body);
-  background: var(--color-paper);
-  color: var(--color-ink);
+  color: var(--color-cream);
   line-height: 1.5;
+  background-color: var(--color-night);
+  background-image: radial-gradient(
+      1100px 700px at 85% -10%,
+      rgba(217, 80, 28, 0.32),
+      transparent 62%
+    ),
+    radial-gradient(
+      800px 620px at -15% 25%,
+      rgba(200, 144, 31, 0.14),
+      transparent 60%
+    ),
+    radial-gradient(
+      1000px 760px at 50% 115%,
+      rgba(178, 62, 18, 0.22),
+      transparent 62%
+    );
+  background-attachment: fixed;
+}
+
+/* film grain over the whole page */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
 }
 
 h1,
@@ -38,4 +73,43 @@ h4 {
   line-height: 1.1;
   letter-spacing: -0.01em;
   font-weight: 700;
+}
+
+::selection {
+  background: rgba(217, 80, 28, 0.55);
+  color: #fff;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes deal-in {
+  from {
+    opacity: 0;
+    transform: translateY(26px) scale(0.94) rotate(-2deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+}
+
+@keyframes ember-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(217, 80, 28, 0.55),
+      0 18px 44px -10px rgba(217, 80, 28, 0.55);
+  }
+  50% {
+    box-shadow: 0 0 0 9px rgba(217, 80, 28, 0),
+      0 18px 44px -10px rgba(217, 80, 28, 0.75);
+  }
 }
