@@ -73,6 +73,18 @@ const CATS = [
   { id: "pastry", label: "Pastry" },
 ] as const;
 
+// ambient floating food icons (kept to the side gutters so the deck stays clear)
+const FLOATERS = [
+  { icon: "🍲", top: "16%", left: "5%", size: 26, duration: "7s", delay: "0s" },
+  { icon: "🍢", top: "34%", left: "9%", size: 20, duration: "9s", delay: "1.2s" },
+  { icon: "🥘", top: "58%", left: "4%", size: 30, duration: "8s", delay: ".6s" },
+  { icon: "🧁", top: "78%", left: "10%", size: 22, duration: "10s", delay: "2s" },
+  { icon: "🍗", top: "14%", right: "6%", size: 22, duration: "8.5s", delay: ".9s" },
+  { icon: "🎂", top: "38%", right: "4%", size: 28, duration: "7.5s", delay: "1.6s" },
+  { icon: "🍞", top: "62%", right: "8%", size: 24, duration: "9.5s", delay: ".3s" },
+  { icon: "🥧", top: "82%", right: "5%", size: 20, duration: "8s", delay: "2.4s" },
+] as const;
+
 function PotIcon({ full = true }: { full?: boolean }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
@@ -198,6 +210,35 @@ export default function Home() {
 
   return (
     <div className="relative z-[2] mx-auto w-full max-w-[1080px] px-4 pb-36 md:px-7 md:pb-32">
+      {/* Ambient motion layer — floating food + delivery riders (Chowdeck-style) */}
+      <div aria-hidden className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+        {FLOATERS.map((f) => (
+          <span
+            key={f.icon + f.top}
+            className="fx-float absolute opacity-[.14]"
+            style={{
+              top: f.top,
+              left: "left" in f ? f.left : undefined,
+              right: "right" in f ? f.right : undefined,
+              fontSize: f.size,
+              animationDuration: f.duration,
+              animationDelay: f.delay,
+            }}
+          >
+            {f.icon}
+          </span>
+        ))}
+        <span className="fx-ride absolute bottom-28 left-0 text-[32px] opacity-45 [filter:drop-shadow(0_6px_14px_rgba(217,80,28,.45))]">
+          🛵
+        </span>
+        <span
+          className="fx-ride absolute bottom-44 left-0 text-[22px] opacity-25"
+          style={{ animationDuration: "31s", animationDelay: "9s" }}
+        >
+          🚲
+        </span>
+      </div>
+
       {/* App bar */}
       <header className="sticky top-0 z-20 -mx-4 flex items-center justify-between bg-night/70 px-4 pb-3 pt-4 backdrop-blur-xl md:-mx-7 md:px-7 [animation:fade-up_.5s_ease_both]">
         <div className="flex items-center gap-[10px] font-display text-[22px] font-extrabold tracking-[-0.02em]">
@@ -309,8 +350,8 @@ export default function Home() {
             return (
               <div
                 key={chef.name}
-                className={`absolute inset-0 select-none overflow-hidden rounded-[26px] border border-white/10 bg-night-soft shadow-[0_30px_80px_-18px_rgba(0,0,0,.8),0_18px_50px_-20px_rgba(217,80,28,.35)] will-change-transform ${
-                  isTop ? (drag ? "cursor-grabbing" : "cursor-grab") : ""
+                className={`group absolute inset-0 select-none overflow-hidden rounded-[26px] border border-white/10 bg-night-soft shadow-[0_30px_80px_-18px_rgba(0,0,0,.8),0_18px_50px_-20px_rgba(217,80,28,.35)] will-change-transform ${
+                  isTop ? (drag ? "cursor-grabbing" : `cursor-grab ${fly ? "" : "card-idle"}`) : ""
                 }`}
                 style={style}
                 onPointerDown={isTop ? onPointerDown : undefined}
@@ -325,10 +366,12 @@ export default function Home() {
                     src={chef.photo}
                     alt={chef.name}
                     draggable={false}
-                    className="size-full object-cover object-[center_22%]"
+                    className="size-full object-cover object-[center_22%] transition-transform duration-700 ease-out group-hover:scale-[1.07]"
                   />
                 </div>
                 <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(6,4,3,.42)_0%,transparent_26%,transparent_42%,rgba(6,4,3,.94)_100%)]" />
+                {/* light sweep across the photo on hover */}
+                <div className="pointer-events-none absolute inset-0 z-[2] -translate-x-[160%] bg-[linear-gradient(105deg,transparent_42%,rgba(255,255,255,.16)_50%,transparent_58%)] transition-transform duration-1000 ease-out group-hover:translate-x-[160%]" />
 
                 {isTop && (
                   <>
