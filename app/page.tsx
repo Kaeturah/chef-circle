@@ -73,17 +73,10 @@ const CATS = [
   { id: "pastry", label: "Pastry" },
 ] as const;
 
-// ambient floating food icons (kept to the side gutters so the deck stays clear)
-const FLOATERS = [
-  { icon: "🍲", top: "16%", left: "5%", size: 26, duration: "7s", delay: "0s" },
-  { icon: "🍢", top: "34%", left: "9%", size: 20, duration: "9s", delay: "1.2s" },
-  { icon: "🥘", top: "58%", left: "4%", size: 30, duration: "8s", delay: ".6s" },
-  { icon: "🧁", top: "78%", left: "10%", size: 22, duration: "10s", delay: "2s" },
-  { icon: "🍗", top: "14%", right: "6%", size: 22, duration: "8.5s", delay: ".9s" },
-  { icon: "🎂", top: "38%", right: "4%", size: 28, duration: "7.5s", delay: "1.6s" },
-  { icon: "🍞", top: "62%", right: "8%", size: 24, duration: "9.5s", delay: ".3s" },
-  { icon: "🥧", top: "82%", right: "5%", size: 20, duration: "8s", delay: "2.4s" },
-] as const;
+const TICKER_DISHES = [
+  "Party Jollof", "Ofe Owerri", "Small Chops", "Amala & Ewedu",
+  "Wedding Cakes", "Suya Platter", "Pepper Soup", "Puff-Puff",
+];
 
 function PotIcon({ full = true }: { full?: boolean }) {
   return (
@@ -118,23 +111,63 @@ function EyeIcon() {
   );
 }
 
+/* line-art scene: chef's wok tossing over a flame */
+function WokScene({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 140 100" className={`scene ${className ?? ""}`} aria-hidden>
+      <g stroke="currentColor" strokeWidth="2.4" fill="none" strokeLinecap="round">
+        <circle className="toss" cx="60" cy="44" r="2.6" />
+        <circle className="toss" cx="70" cy="46" r="2.1" style={{ animationDelay: ".5s" }} />
+        <circle className="toss" cx="79" cy="44" r="1.7" style={{ animationDelay: "1.1s" }} />
+        <path d="M34 50 Q70 84 106 50" />
+        <path d="M30 50 H110" />
+        <path d="M30 50 h-11 M110 50 h11" />
+        <path className="flame" d="M56 88 c2.5 -7 7.5 -7 10 0" />
+        <path className="flame" d="M71 90 c2 -6 6 -6 8 0" style={{ animationDelay: ".35s" }} />
+        <path className="flame" d="M45 90 c2 -6 6 -6 8 0" style={{ animationDelay: ".7s" }} />
+        <path className="steam" d="M90 38 c-3 -4 3 -8 0 -12" />
+        <path className="steam" d="M98 36 c-3 -4 3 -8 0 -12" style={{ animationDelay: "1.3s" }} />
+      </g>
+    </svg>
+  );
+}
+
+/* line-art scene: cloche lid lifting off a serving plate */
+function ClocheScene({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 120 72" className={`scene ${className ?? ""}`} aria-hidden>
+      <g stroke="currentColor" strokeWidth="2.4" fill="none" strokeLinecap="round">
+        <g className="cloche-lid">
+          <path d="M32 48 a28 28 0 0 1 56 0" />
+          <path d="M60 20 v-5" />
+          <circle cx="60" cy="12" r="2.6" />
+        </g>
+        <path d="M24 48 H96" />
+        <path d="M30 54 H90" />
+        <path className="steam" d="M52 42 c-2 -3 2 -6 0 -9" />
+        <path className="steam" d="M66 42 c-2 -3 2 -6 0 -9" style={{ animationDelay: "1.1s" }} />
+      </g>
+    </svg>
+  );
+}
+
 function TierBadge({ tier }: { tier: Tier }) {
   if (tier === "premium") {
     return (
-      <span className="inline-flex items-center gap-1 rounded-full border border-gold-bright/40 bg-[#2b1f08]/70 px-[10px] py-1 text-[11px] font-bold text-gold-bright backdrop-blur-md">
+      <span className="inline-flex items-center gap-1 rounded-full border border-gold-bright/40 bg-black/40 px-[10px] py-1 text-[11px] font-bold text-gold-bright backdrop-blur-md">
         <span className="size-3"><StarIcon /></span>Premium
       </span>
     );
   }
   if (tier === "verified") {
     return (
-      <span className="inline-flex items-center gap-1 rounded-full border border-green-bright/40 bg-[#0c2417]/70 px-[10px] py-1 text-[11px] font-bold text-green-bright backdrop-blur-md">
+      <span className="inline-flex items-center gap-1 rounded-full border border-green-bright/40 bg-black/40 px-[10px] py-1 text-[11px] font-bold text-green-bright backdrop-blur-md">
         <span className="size-3"><TickIcon /></span>Verified
       </span>
     );
   }
   return (
-    <span className="inline-flex items-center rounded-full border border-white/20 bg-black/40 px-[10px] py-1 text-[11px] font-bold text-white/80 backdrop-blur-md">
+    <span className="inline-flex items-center rounded-full border border-white/25 bg-black/40 px-[10px] py-1 text-[11px] font-bold text-white/85 backdrop-blur-md">
       Listed
     </span>
   );
@@ -210,52 +243,29 @@ export default function Home() {
 
   return (
     <div className="relative z-[2] mx-auto w-full max-w-[1080px] px-4 pb-36 md:px-7 md:pb-32">
-      {/* Ambient motion layer — floating food + delivery riders (Chowdeck-style) */}
-      <div aria-hidden className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-        {FLOATERS.map((f) => (
-          <span
-            key={f.icon + f.top}
-            className="fx-float absolute opacity-[.14]"
-            style={{
-              top: f.top,
-              left: "left" in f ? f.left : undefined,
-              right: "right" in f ? f.right : undefined,
-              fontSize: f.size,
-              animationDuration: f.duration,
-              animationDelay: f.delay,
-            }}
-          >
-            {f.icon}
-          </span>
-        ))}
-        <span className="fx-ride absolute bottom-28 left-0 text-[32px] opacity-45 [filter:drop-shadow(0_6px_14px_rgba(217,80,28,.45))]">
-          🛵
-        </span>
-        <span
-          className="fx-ride absolute bottom-44 left-0 text-[22px] opacity-25"
-          style={{ animationDuration: "31s", animationDelay: "9s" }}
-        >
-          🚲
-        </span>
+      {/* Ambient kitchen scenes (line art, desktop gutters) */}
+      <div aria-hidden className="pointer-events-none fixed inset-0 z-0 hidden overflow-hidden text-forest md:block">
+        <WokScene className="absolute bottom-28 left-8 w-[128px] opacity-45" />
+        <ClocheScene className="absolute bottom-44 right-10 w-[100px] opacity-35" />
       </div>
 
       {/* App bar */}
-      <header className="sticky top-0 z-20 -mx-4 flex items-center justify-between bg-night/70 px-4 pb-3 pt-4 backdrop-blur-xl md:-mx-7 md:px-7 [animation:fade-up_.5s_ease_both]">
-        <div className="flex items-center gap-[10px] font-display text-[22px] font-extrabold tracking-[-0.02em]">
-          <span className="grid size-[34px] shrink-0 place-items-center rounded-[11px] bg-[linear-gradient(135deg,#F2681F,#C8901F)] text-white shadow-[0_6px_20px_-4px_rgba(217,80,28,.7)]">
+      <header className="sticky top-0 z-20 -mx-4 flex items-center justify-between border-b border-line/70 bg-ivory/80 px-4 pb-3 pt-4 backdrop-blur-xl md:-mx-7 md:px-7 [animation:fade-up_.5s_ease_both]">
+        <div className="flex items-center gap-[10px] font-display text-[22px] font-extrabold tracking-[-0.02em] text-forest-deep">
+          <span className="grid size-[34px] shrink-0 place-items-center rounded-[11px] bg-[linear-gradient(140deg,#16745B,#0E4A38)] text-ivory shadow-[0_8px_20px_-6px_rgba(14,74,56,.55)]">
             <span className="size-5"><PotIcon /></span>
           </span>
           ChefCircle
         </div>
         <div className="flex items-center gap-2">
-          <span className="hidden items-center gap-[6px] rounded-full border border-white/10 bg-white/5 px-3 py-[7px] text-[12.5px] font-semibold text-cream-soft sm:inline-flex">
-            <svg className="size-[14px] text-orange-bright" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <span className="hidden items-center gap-[6px] rounded-full border border-line bg-surface px-3 py-[7px] text-[12.5px] font-semibold text-ink-soft shadow-[0_2px_8px_rgba(26,33,28,.05)] sm:inline-flex">
+            <svg className="size-[14px] text-forest-bright" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
               <circle cx="12" cy="10" r="3" />
             </svg>
             Lagos, NG
           </span>
-          <button className="grid size-10 place-items-center rounded-[12px] border border-white/10 bg-white/5 text-cream backdrop-blur-md transition-colors hover:bg-white/10">
+          <button className="grid size-10 place-items-center rounded-[12px] border border-line bg-surface text-ink shadow-[0_2px_8px_rgba(26,33,28,.05)] transition-colors hover:bg-line-soft">
             <svg className="size-[19px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M4 6h16M7 12h10M10 18h4" />
             </svg>
@@ -263,41 +273,56 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Hero line */}
-      <div className="mb-4 mt-2 text-center [animation:fade-up_.6s_.08s_ease_both]">
-        <h1 className="mx-auto max-w-[640px] text-[clamp(26px,6vw,44px)] font-extrabold leading-[1.05] tracking-[-0.02em]">
+      {/* Hero */}
+      <div className="mb-3 mt-4 text-center [animation:fade-up_.6s_.08s_ease_both]">
+        <p className="mb-2 text-[11px] font-bold uppercase tracking-[.24em] text-forest-bright">
+          Discover · Lagos &amp; Owerri · Verified
+        </p>
+        <h1 className="mx-auto max-w-[640px] text-[clamp(26px,6vw,44px)] font-extrabold leading-[1.05] tracking-[-0.02em] text-forest-deep">
           Chefs worth{" "}
-          <span className="bg-[linear-gradient(100deg,#F2681F_10%,#F5B83D_55%,#F2681F_90%)] bg-clip-text text-transparent">
+          <span className="bg-[linear-gradient(100deg,#16745B_15%,#C8901F_85%)] bg-clip-text text-transparent">
             swiping right
           </span>{" "}
           for
         </h1>
-        <p className="mx-auto mt-2 hidden max-w-[440px] text-[14px] text-cream-soft sm:block">
+        <p className="mx-auto mt-2 hidden max-w-[440px] text-[14px] text-ink-soft sm:block">
           Verified chefs, bakers &amp; pastry pros — cooked fresh in your home.
         </p>
       </div>
 
+      {/* Dish ticker */}
+      <div className="mb-4 overflow-hidden border-y border-line/80 py-[7px] [animation:fade-up_.6s_.14s_ease_both]" aria-hidden>
+        <div className="ticker-track flex w-max items-center gap-7">
+          {[...TICKER_DISHES, ...TICKER_DISHES].map((dish, i) => (
+            <span key={i} className="flex items-center gap-7 whitespace-nowrap text-[10.5px] font-bold uppercase tracking-[.2em] text-ink-faint">
+              {dish}
+              <span className="text-[8px] text-gold">◆</span>
+            </span>
+          ))}
+        </div>
+      </div>
+
       {/* Guest banner */}
-      <div className="mx-auto mb-4 flex max-w-[560px] items-center gap-[10px] rounded-2xl border border-white/10 bg-white/[.04] px-4 py-2 text-[13px] text-cream-soft backdrop-blur-md [animation:fade-up_.6s_.16s_ease_both]">
-        <span>👋 Browsing as <b className="font-bold text-cream">guest</b> — swipe freely.</span>
+      <div className="mx-auto mb-4 flex max-w-[560px] items-center gap-[10px] rounded-2xl border border-line bg-surface px-4 py-2 text-[13px] text-ink-soft shadow-[0_4px_16px_rgba(26,33,28,.05)] [animation:fade-up_.6s_.18s_ease_both]">
+        <span>👋 Browsing as <b className="font-bold text-ink">guest</b> — swipe freely.</span>
         <button
           onClick={() => setGateOpen(true)}
-          className="ml-auto shrink-0 rounded-full bg-[linear-gradient(135deg,#F2681F,#D9501C)] px-4 py-[7px] text-[12.5px] font-bold text-white shadow-[0_6px_18px_-4px_rgba(217,80,28,.8)] transition-transform hover:scale-[1.04]"
+          className="ml-auto shrink-0 rounded-full bg-forest px-4 py-[7px] text-[12.5px] font-bold text-ivory shadow-[0_8px_18px_-6px_rgba(14,74,56,.6)] transition-transform hover:scale-[1.04] hover:bg-forest-deep"
         >
           Sign in
         </button>
       </div>
 
       {/* Category chips */}
-      <div className="mb-4 flex justify-center gap-2 overflow-x-auto pb-[6px] [animation:fade-up_.6s_.22s_ease_both] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className="mb-4 flex justify-center gap-2 overflow-x-auto pb-[6px] [animation:fade-up_.6s_.24s_ease_both] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {CATS.map((c) => (
           <button
             key={c.id}
             onClick={() => pickCat(c.id)}
             className={`shrink-0 rounded-full border px-4 py-2 text-[13px] font-semibold transition-all duration-200 ${
               cat === c.id
-                ? "border-transparent bg-[linear-gradient(135deg,#F2681F,#D9501C)] text-white shadow-[0_8px_22px_-6px_rgba(217,80,28,.8)]"
-                : "border-white/10 bg-white/5 text-cream-soft backdrop-blur-md hover:bg-white/10 hover:text-cream"
+                ? "border-forest bg-forest text-ivory shadow-[0_8px_20px_-8px_rgba(14,74,56,.7)]"
+                : "border-line bg-surface text-ink-soft hover:border-forest/40 hover:text-forest"
             }`}
           >
             {c.label}
@@ -309,13 +334,13 @@ export default function Home() {
       <div className="mx-auto max-w-[420px] [animation:deal-in_.7s_.3s_ease_both]">
         <div className="relative h-[min(56vh,560px)] min-h-[400px] touch-pan-y">
           {queue.length === 0 && (
-            <div className="absolute inset-0 grid place-items-center rounded-[26px] border-2 border-dashed border-white/15 bg-white/[.03] p-[30px] text-center text-cream-soft backdrop-blur-md">
+            <div className="absolute inset-0 grid place-items-center rounded-[26px] border-2 border-dashed border-ink/15 bg-surface/70 p-[30px] text-center text-ink-soft backdrop-blur-md">
               <div>
-                <h3 className="mb-[6px] text-[20px] text-cream">You&apos;ve seen everyone nearby</h3>
+                <h3 className="mb-[6px] text-[20px] text-ink">You&apos;ve seen everyone nearby</h3>
                 <p className="text-[13.5px]">Change category or widen your area to see more chefs, bakers and pastry pros.</p>
                 <button
                   onClick={() => pickCat(cat)}
-                  className="mt-4 rounded-xl bg-[linear-gradient(135deg,#F2681F,#D9501C)] px-5 py-[11px] font-bold text-white shadow-[0_10px_26px_-8px_rgba(217,80,28,.8)] transition-transform hover:scale-[1.03]"
+                  className="mt-4 rounded-xl bg-forest px-5 py-[11px] font-bold text-ivory shadow-[0_10px_24px_-8px_rgba(14,74,56,.7)] transition-transform hover:scale-[1.03]"
                 >
                   Start over
                 </button>
@@ -329,7 +354,7 @@ export default function Home() {
               ? {
                   transform: `translateY(${depth * 12}px) scale(${1 - depth * 0.04})`,
                   zIndex: 10 - depth,
-                  filter: "brightness(.7)",
+                  filter: "brightness(.85)",
                   transition: "transform .3s ease, opacity .3s ease, filter .3s ease",
                 }
               : fly
@@ -350,7 +375,7 @@ export default function Home() {
             return (
               <div
                 key={chef.name}
-                className={`group absolute inset-0 select-none overflow-hidden rounded-[26px] border border-white/10 bg-night-soft shadow-[0_30px_80px_-18px_rgba(0,0,0,.8),0_18px_50px_-20px_rgba(217,80,28,.35)] will-change-transform ${
+                className={`group absolute inset-0 select-none overflow-hidden rounded-[26px] border border-black/5 bg-surface shadow-[0_34px_70px_-24px_rgba(26,33,28,.45),0_12px_30px_-16px_rgba(14,74,56,.25)] will-change-transform ${
                   isTop ? (drag ? "cursor-grabbing" : `cursor-grab ${fly ? "" : "card-idle"}`) : ""
                 }`}
                 style={style}
@@ -369,7 +394,7 @@ export default function Home() {
                     className="size-full object-cover object-[center_22%] transition-transform duration-700 ease-out group-hover:scale-[1.07]"
                   />
                 </div>
-                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(6,4,3,.42)_0%,transparent_26%,transparent_42%,rgba(6,4,3,.94)_100%)]" />
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(6,10,8,.38)_0%,transparent_26%,transparent_44%,rgba(6,10,8,.92)_100%)]" />
                 {/* light sweep across the photo on hover */}
                 <div className="pointer-events-none absolute inset-0 z-[2] -translate-x-[160%] bg-[linear-gradient(105deg,transparent_42%,rgba(255,255,255,.16)_50%,transparent_58%)] transition-transform duration-1000 ease-out group-hover:translate-x-[160%]" />
 
@@ -391,7 +416,7 @@ export default function Home() {
                 )}
 
                 <div className="absolute left-4 right-4 top-4 z-[3] flex items-center justify-between">
-                  <span className="inline-flex items-center rounded-full border border-white/20 bg-black/40 px-[10px] py-1 text-[11px] font-bold text-white backdrop-blur-md">
+                  <span className="inline-flex items-center rounded-full border border-white/25 bg-black/40 px-[10px] py-1 text-[11px] font-bold text-white backdrop-blur-md">
                     {chef.catLabel}
                   </span>
                   <TierBadge tier={chef.tier} />
@@ -441,7 +466,7 @@ export default function Home() {
           <button
             onClick={undo}
             title="Undo"
-            className="grid size-12 place-items-center rounded-full border border-white/10 bg-white/5 text-cream-soft backdrop-blur-md transition-all duration-150 hover:scale-[1.08] hover:bg-white/10 hover:text-cream"
+            className="grid size-12 place-items-center rounded-full border border-line bg-surface text-ink-faint shadow-[0_4px_14px_rgba(26,33,28,.08)] transition-all duration-150 hover:scale-[1.08] hover:text-ink"
           >
             <svg className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M3 7v6h6M3 13a9 9 0 1 0 3-7.7" />
@@ -450,7 +475,7 @@ export default function Home() {
           <button
             onClick={() => flyTop(-1)}
             title="Pass"
-            className="grid size-[60px] place-items-center rounded-full border border-red-bright/30 bg-white/5 text-red-bright backdrop-blur-md transition-all duration-150 hover:scale-[1.08] hover:bg-red-bright/15"
+            className="grid size-[60px] place-items-center rounded-full border border-red/25 bg-surface text-red shadow-[0_4px_14px_rgba(26,33,28,.08)] transition-all duration-150 hover:scale-[1.08] hover:bg-red/5"
           >
             <svg className="size-[26px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
               <path d="M18 6 6 18M6 6l12 12" />
@@ -459,44 +484,44 @@ export default function Home() {
           <button
             onClick={() => flyTop(1)}
             title="Book"
-            className="grid size-[72px] place-items-center rounded-full bg-[linear-gradient(135deg,#F2681F,#C8401A)] text-white [animation:ember-pulse_2.6s_ease-in-out_infinite] transition-transform duration-150 hover:scale-[1.08]"
+            className="grid size-[72px] place-items-center rounded-full bg-[linear-gradient(140deg,#16745B,#0E4A38)] text-ivory [animation:ember-pulse_2.6s_ease-in-out_infinite] transition-transform duration-150 hover:scale-[1.08]"
           >
             <span className="size-7"><PotIcon /></span>
           </button>
           <button
             title="View profile"
-            className="grid size-12 place-items-center rounded-full border border-white/10 bg-white/5 text-cream-soft backdrop-blur-md transition-all duration-150 hover:scale-[1.08] hover:bg-white/10 hover:text-cream"
+            className="grid size-12 place-items-center rounded-full border border-line bg-surface text-ink-faint shadow-[0_4px_14px_rgba(26,33,28,.08)] transition-all duration-150 hover:scale-[1.08] hover:text-ink"
           >
             <span className="size-5"><EyeIcon /></span>
           </button>
         </div>
-        <p className="mt-3 hidden text-center text-[12.5px] text-cream-soft/70 [animation:fade-up_.6s_.5s_ease_both] [@media(min-height:760px)]:block">
+        <p className="mt-3 hidden text-center text-[12.5px] text-ink-faint [animation:fade-up_.6s_.5s_ease_both] [@media(min-height:760px)]:block">
           Swipe right or tap the pot to book · swipe left to pass · tap the eye for full profile
         </p>
       </div>
 
       {/* Login gate modal */}
       {gateOpen && (
-        <div className="fixed inset-0 z-[200] flex items-end justify-center bg-black/70 backdrop-blur-sm sm:items-center">
-          <div className="w-full max-w-[420px] rounded-t-[26px] border border-white/10 bg-night-soft/95 px-[22px] pb-[30px] pt-[26px] text-center backdrop-blur-xl [animation:fade-up_.35s_ease_both] sm:rounded-[26px]">
-            <div className="mx-auto mb-[14px] grid size-14 place-items-center rounded-2xl bg-[linear-gradient(135deg,rgba(242,104,31,.25),rgba(200,144,31,.2))] text-orange-bright">
+        <div className="fixed inset-0 z-[200] flex items-end justify-center bg-forest-deep/40 backdrop-blur-sm sm:items-center">
+          <div className="w-full max-w-[420px] rounded-t-[26px] border border-line bg-surface px-[22px] pb-[30px] pt-[26px] text-center shadow-[0_-20px_60px_rgba(26,33,28,.25)] [animation:fade-up_.35s_ease_both] sm:rounded-[26px]">
+            <div className="mx-auto mb-[14px] grid size-14 place-items-center rounded-2xl bg-mint-wash text-forest">
               <svg className="size-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <rect x="4" y="11" width="16" height="10" rx="2" />
                 <path d="M8 11V7a4 4 0 0 1 8 0v4" />
               </svg>
             </div>
-            <h2 className="text-[21px] text-cream">Sign in to keep going</h2>
-            <p className="mb-[18px] mt-2 text-[14px] leading-[1.55] text-cream-soft">
+            <h2 className="text-[21px] text-forest-deep">Sign in to keep going</h2>
+            <p className="mb-[18px] mt-2 text-[14px] leading-[1.55] text-ink-soft">
               You&apos;ve found a chef you like! Create a free account to book, message and pay
               securely — it takes under a minute.
             </p>
             <button
               onClick={() => setGateOpen(false)}
-              className="mb-[10px] flex h-[52px] w-full items-center justify-center rounded-[14px] bg-[linear-gradient(135deg,#F2681F,#D9501C)] text-[15px] font-bold text-white shadow-[0_12px_30px_-8px_rgba(217,80,28,.8)] transition-transform duration-150 hover:scale-[1.02]"
+              className="mb-[10px] flex h-[52px] w-full items-center justify-center rounded-[14px] bg-forest text-[15px] font-bold text-ivory shadow-[0_12px_28px_-10px_rgba(14,74,56,.7)] transition-transform duration-150 hover:scale-[1.02] hover:bg-forest-deep"
             >
               Sign in / Create account
             </button>
-            <button onClick={() => setGateOpen(false)} className="p-2 text-[14px] font-semibold text-cream-soft/80 hover:text-cream">
+            <button onClick={() => setGateOpen(false)} className="p-2 text-[14px] font-semibold text-ink-faint hover:text-ink">
               Keep browsing
             </button>
           </div>
@@ -504,7 +529,7 @@ export default function Home() {
       )}
 
       {/* Floating tab dock */}
-      <nav className="fixed inset-x-4 bottom-4 z-40 mx-auto flex max-w-[440px] justify-around rounded-full border border-white/10 bg-night-soft/85 px-2 py-2 shadow-[0_20px_50px_-12px_rgba(0,0,0,.9)] backdrop-blur-xl [animation:fade-up_.6s_.55s_ease_both]">
+      <nav className="fixed inset-x-4 bottom-4 z-40 mx-auto flex max-w-[440px] justify-around rounded-full border border-line bg-surface/90 px-2 py-2 shadow-[0_18px_44px_-14px_rgba(26,33,28,.35)] backdrop-blur-xl [animation:fade-up_.6s_.55s_ease_both]">
         {(
           [
             ["Home", true],
@@ -517,7 +542,7 @@ export default function Home() {
           <button
             key={label}
             className={`relative flex flex-col items-center gap-[2px] rounded-full px-3 py-[6px] text-[10.5px] font-semibold transition-colors ${
-              active ? "text-orange-bright" : "text-cream-soft/60 hover:text-cream"
+              active ? "text-forest" : "text-ink-faint hover:text-ink"
             }`}
           >
             <svg className="size-[21px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -543,7 +568,7 @@ export default function Home() {
               )}
             </svg>
             {label}
-            {active && <span className="absolute -bottom-[2px] size-1 rounded-full bg-orange-bright shadow-[0_0_8px_2px_rgba(242,104,31,.8)]" />}
+            {active && <span className="absolute -bottom-[2px] size-1 rounded-full bg-forest shadow-[0_0_8px_2px_rgba(22,116,91,.6)]" />}
           </button>
         ))}
       </nav>
