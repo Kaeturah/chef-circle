@@ -111,7 +111,7 @@ function EyeIcon() {
   );
 }
 
-/* line-art scene: chef's wok tossing over a flame */
+/* line-art scene: chef's wok tossing over a flame, spatula at the ready */
 function WokScene({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 140 100" className={`scene ${className ?? ""}`} aria-hidden>
@@ -119,9 +119,13 @@ function WokScene({ className }: { className?: string }) {
         <circle className="toss" cx="60" cy="44" r="2.6" />
         <circle className="toss" cx="70" cy="46" r="2.1" style={{ animationDelay: ".5s" }} />
         <circle className="toss" cx="79" cy="44" r="1.7" style={{ animationDelay: "1.1s" }} />
+        <circle className="toss" cx="52" cy="46" r="1.8" style={{ animationDelay: "1.7s" }} />
         <path d="M34 50 Q70 84 106 50" />
         <path d="M30 50 H110" />
         <path d="M30 50 h-11 M110 50 h11" />
+        {/* spatula resting over the rim */}
+        <path d="M100 44 l22 -20" />
+        <path d="M96 48 q10 -10 14 -6" />
         <path className="flame" d="M56 88 c2.5 -7 7.5 -7 10 0" />
         <path className="flame" d="M71 90 c2 -6 6 -6 8 0" style={{ animationDelay: ".35s" }} />
         <path className="flame" d="M45 90 c2 -6 6 -6 8 0" style={{ animationDelay: ".7s" }} />
@@ -132,7 +136,7 @@ function WokScene({ className }: { className?: string }) {
   );
 }
 
-/* line-art scene: cloche lid lifting off a serving plate */
+/* line-art scene: cloche lid lifting off a serving plate, with a sparkle */
 function ClocheScene({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 120 72" className={`scene ${className ?? ""}`} aria-hidden>
@@ -146,6 +150,96 @@ function ClocheScene({ className }: { className?: string }) {
         <path d="M30 54 H90" />
         <path className="steam" d="M52 42 c-2 -3 2 -6 0 -9" />
         <path className="steam" d="M66 42 c-2 -3 2 -6 0 -9" style={{ animationDelay: "1.1s" }} />
+        <path className="sparkle" d="M98 16 v8 M94 20 h8" />
+        <path className="sparkle" d="M22 22 v6 M19 25 h6" style={{ animationDelay: ".4s" }} />
+      </g>
+    </svg>
+  );
+}
+
+/* line-art scene: chef's knife rocking on a board, veg bits hopping */
+function KnifeChopScene({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 120 84" className={`scene ${className ?? ""}`} aria-hidden>
+      <g stroke="currentColor" strokeWidth="2.4" fill="none" strokeLinecap="round">
+        <circle className="hop" cx="46" cy="62" r="2.4" />
+        <circle className="hop" cx="58" cy="63" r="2" style={{ animationDelay: ".12s" }} />
+        <circle className="hop" cx="38" cy="63" r="1.7" style={{ animationDelay: ".22s" }} />
+        <g className="chop">
+          <path d="M30 46 Q30 26 58 24 L88 24 L88 46 Z" />
+          <path d="M88 32 h18" />
+        </g>
+        <path d="M16 68 H104" />
+        <path d="M22 68 v4 M98 68 v4" />
+      </g>
+    </svg>
+  );
+}
+
+/* line-art scene: pot boiling, lid rattling, steam escaping */
+function BoilPotScene({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 100 92" className={`scene ${className ?? ""}`} aria-hidden>
+      <g stroke="currentColor" strokeWidth="2.4" fill="none" strokeLinecap="round">
+        <path className="steam" d="M38 34 c-3 -4 3 -8 0 -12" />
+        <path className="steam" d="M60 34 c-3 -4 3 -8 0 -12" style={{ animationDelay: "1.2s" }} />
+        <g className="jiggle">
+          <path d="M30 42 q20 -14 40 0" />
+          <path d="M50 34 v-4" />
+          <circle cx="50" cy="27" r="2.4" />
+        </g>
+        <path d="M26 42 H74" />
+        <path d="M26 46 h-8 M74 46 h8" />
+        <path d="M30 42 v20 q0 8 8 8 h24 q8 0 8 -8 v-20" />
+      </g>
+    </svg>
+  );
+}
+
+/* line-art scene: whisk stirring a mixing bowl */
+function WhiskBowlScene({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 110 88" className={`scene ${className ?? ""}`} aria-hidden>
+      <g stroke="currentColor" strokeWidth="2.4" fill="none" strokeLinecap="round">
+        <g className="whisk">
+          <path d="M72 8 L60 36" />
+          <path d="M60 36 q-10 8 -2 14 q10 2 8 -12" />
+          <path d="M60 36 q10 8 2 14" />
+        </g>
+        <path d="M20 46 H90" />
+        <path d="M24 46 q31 30 62 0" />
+        <path d="M48 74 h16" />
+      </g>
+    </svg>
+  );
+}
+
+/* line-art scene: pancake flipping out of a pan */
+function PanFlipScene({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 120 76" className={`scene ${className ?? ""}`} aria-hidden>
+      <g stroke="currentColor" strokeWidth="2.4" fill="none" strokeLinecap="round">
+        <ellipse className="flip" cx="62" cy="34" rx="12" ry="3.4" />
+        <path d="M40 42 q22 16 44 0" />
+        <path d="M38 42 H86" />
+        <path d="M14 40 L38 42" />
+      </g>
+    </svg>
+  );
+}
+
+/* line-art scene: salt shaker tipping, grains falling */
+function SprinkleScene({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 84 92" className={`scene ${className ?? ""}`} aria-hidden>
+      <g stroke="currentColor" strokeWidth="2.4" fill="none" strokeLinecap="round">
+        <g className="tilt">
+          <path d="M32 18 h20 v8 h-20 Z" />
+          <path d="M30 26 h24 v20 q0 5 -5 5 h-14 q-5 0 -5 -5 Z" />
+        </g>
+        <circle className="grain" cx="30" cy="58" r="1.6" />
+        <circle className="grain" cx="36" cy="62" r="1.4" style={{ animationDelay: ".4s" }} />
+        <circle className="grain" cx="24" cy="60" r="1.4" style={{ animationDelay: ".8s" }} />
       </g>
     </svg>
   );
@@ -245,8 +339,13 @@ export default function Home() {
     <div className="relative z-[2] mx-auto w-full max-w-[1080px] px-4 pb-36 md:px-7 md:pb-32">
       {/* Ambient kitchen scenes (line art, desktop gutters) */}
       <div aria-hidden className="pointer-events-none fixed inset-0 z-0 hidden overflow-hidden text-forest md:block">
-        <WokScene className="absolute bottom-28 left-8 w-[128px] opacity-45" />
-        <ClocheScene className="absolute bottom-44 right-10 w-[100px] opacity-35" />
+        <KnifeChopScene className="absolute left-8 top-[20%] w-[104px] opacity-35" />
+        <WhiskBowlScene className="absolute left-14 top-[52%] w-[96px] opacity-30" />
+        <WokScene className="absolute bottom-28 left-8 w-[132px] opacity-45" />
+        <BoilPotScene className="absolute right-10 top-[18%] w-[92px] opacity-35" />
+        <PanFlipScene className="absolute right-12 top-[50%] w-[112px] opacity-30" />
+        <ClocheScene className="absolute bottom-44 right-10 w-[104px] opacity-40" />
+        <SprinkleScene className="absolute bottom-[12%] right-[22%] hidden w-[64px] opacity-30 xl:block" />
       </div>
 
       {/* App bar */}
@@ -274,7 +373,10 @@ export default function Home() {
       </header>
 
       {/* Hero */}
-      <div className="mb-3 mt-4 text-center [animation:fade-up_.6s_.08s_ease_both]">
+      <div className="relative mb-3 mt-4 text-center [animation:fade-up_.6s_.08s_ease_both]">
+        {/* mini kitchen scenes flanking the hero on mobile */}
+        <WokScene className="absolute -left-1 top-1 -z-10 w-14 text-forest opacity-25 md:hidden" />
+        <BoilPotScene className="absolute -right-1 top-0 -z-10 w-12 text-forest opacity-25 md:hidden" />
         <p className="mb-2 text-[11px] font-bold uppercase tracking-[.24em] text-forest-bright">
           Discover · Lagos &amp; Owerri · Verified
         </p>
