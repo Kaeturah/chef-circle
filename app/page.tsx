@@ -338,13 +338,13 @@ export default function Home() {
   return (
     <div className="relative z-[2] mx-auto w-full max-w-[1080px] px-4 pb-36 md:px-7 md:pb-32">
       {/* Ambient kitchen scenes (line art, desktop gutters) */}
-      <div aria-hidden className="pointer-events-none fixed inset-0 z-0 hidden overflow-hidden text-forest md:block">
-        <KnifeChopScene className="absolute left-8 top-[20%] w-[104px] opacity-35" />
-        <WhiskBowlScene className="absolute left-14 top-[52%] w-[96px] opacity-30" />
-        <WokScene className="absolute bottom-28 left-8 w-[132px] opacity-45" />
-        <BoilPotScene className="absolute right-10 top-[18%] w-[92px] opacity-35" />
-        <PanFlipScene className="absolute right-12 top-[50%] w-[112px] opacity-30" />
-        <ClocheScene className="absolute bottom-44 right-10 w-[104px] opacity-40" />
+      <div aria-hidden className="pointer-events-none fixed inset-0 z-0 hidden overflow-hidden text-forest sm:block">
+        <KnifeChopScene className="absolute left-2 top-[20%] w-[76px] opacity-35 lg:left-8 lg:w-[104px]" />
+        <WhiskBowlScene className="absolute left-3 top-[52%] hidden w-[96px] opacity-30 lg:left-14 lg:block" />
+        <WokScene className="absolute bottom-28 left-2 w-[92px] opacity-45 lg:left-8 lg:w-[132px]" />
+        <BoilPotScene className="absolute right-2 top-[18%] w-[68px] opacity-35 lg:right-10 lg:w-[92px]" />
+        <PanFlipScene className="absolute right-3 top-[50%] hidden w-[112px] opacity-30 lg:right-12 lg:block" />
+        <ClocheScene className="absolute bottom-44 right-2 w-[78px] opacity-40 lg:right-10 lg:w-[104px]" />
         <SprinkleScene className="absolute bottom-[12%] right-[22%] hidden w-[64px] opacity-30 xl:block" />
       </div>
 
@@ -375,8 +375,8 @@ export default function Home() {
       {/* Hero */}
       <div className="relative mb-3 mt-4 text-center [animation:fade-up_.6s_.08s_ease_both]">
         {/* mini kitchen scenes flanking the hero on mobile */}
-        <WokScene className="absolute -left-1 top-1 -z-10 w-14 text-forest opacity-25 md:hidden" />
-        <BoilPotScene className="absolute -right-1 top-0 -z-10 w-12 text-forest opacity-25 md:hidden" />
+        <WokScene className="absolute -left-1 top-1 -z-10 w-14 text-forest opacity-25 sm:hidden" />
+        <BoilPotScene className="absolute -right-1 top-0 -z-10 w-12 text-forest opacity-25 sm:hidden" />
         <p className="mb-2 text-[11px] font-bold uppercase tracking-[.24em] text-forest-bright">
           Discover · Lagos &amp; Owerri · Verified
         </p>
