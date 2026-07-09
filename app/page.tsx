@@ -73,11 +73,6 @@ const CATS = [
   { id: "pastry", label: "Pastry" },
 ] as const;
 
-const TICKER_DISHES = [
-  "Party Jollof", "Ofe Owerri", "Small Chops", "Amala & Ewedu",
-  "Wedding Cakes", "Suya Platter", "Pepper Soup", "Puff-Puff",
-];
-
 function PotIcon({ full = true }: { full?: boolean }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
@@ -245,6 +240,59 @@ function SprinkleScene({ className }: { className?: string }) {
   );
 }
 
+/* line-art scene: mortar & pestle pounding yam */
+function MortarPestleScene({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 90 90" className={`scene ${className ?? ""}`} aria-hidden>
+      <g stroke="currentColor" strokeWidth="2.4" fill="none" strokeLinecap="round">
+        <g className="pound">
+          <path d="M58 10 L48 36" />
+          <ellipse cx="47" cy="40" rx="5" ry="4" />
+        </g>
+        <circle className="hop" cx="36" cy="46" r="1.8" style={{ animationDelay: ".2s" }} />
+        <path d="M20 50 H70" />
+        <path d="M24 50 q21 24 42 0" />
+        <path d="M38 74 h14" />
+      </g>
+    </svg>
+  );
+}
+
+/* line-art scene: suya skewer sizzling on a grill */
+function GrillSuyaScene({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 110 80" className={`scene ${className ?? ""}`} aria-hidden>
+      <g stroke="currentColor" strokeWidth="2.4" fill="none" strokeLinecap="round">
+        <g className="jiggle">
+          <path d="M16 30 H94" />
+          <path d="M32 24 h12 v12 h-12 Z" />
+          <path d="M52 24 h12 v12 h-12 Z" />
+          <path d="M72 24 h10 v12 h-10 Z" />
+        </g>
+        <path className="steam" d="M40 54 c-2 -3 2 -6 0 -9" />
+        <path className="steam" d="M60 54 c-2 -3 2 -6 0 -9" style={{ animationDelay: ".9s" }} />
+        <path className="steam" d="M78 54 c-2 -3 2 -6 0 -9" style={{ animationDelay: "1.7s" }} />
+        <path d="M18 60 H92" />
+        <path d="M24 68 H86" />
+        <path d="M28 68 v6 M82 68 v6" />
+      </g>
+    </svg>
+  );
+}
+
+/* the kitchen parade: scenes and dish names marching through the ticker band */
+const PARADE: [React.ComponentType<{ className?: string }>, string][] = [
+  [WokScene, "Party Jollof"],
+  [KnifeChopScene, "Ofe Owerri"],
+  [BoilPotScene, "Pepper Soup"],
+  [MortarPestleScene, "Pounded Yam"],
+  [PanFlipScene, "Masa"],
+  [ClocheScene, "Fine Dining"],
+  [WhiskBowlScene, "Puff-Puff"],
+  [GrillSuyaScene, "Suya Platter"],
+  [SprinkleScene, "Small Chops"],
+];
+
 function TierBadge({ tier }: { tier: Tier }) {
   if (tier === "premium") {
     return (
@@ -337,21 +385,23 @@ export default function Home() {
 
   return (
     <div className="relative z-[2] mx-auto w-full max-w-[1080px] px-4 pb-36 md:px-7 md:pb-32">
-      {/* Ambient kitchen scenes (line art, desktop gutters) */}
-      <div aria-hidden className="pointer-events-none fixed inset-0 z-0 hidden overflow-hidden text-forest sm:block">
-        <KnifeChopScene className="absolute left-2 top-[20%] w-[76px] opacity-35 lg:left-8 lg:w-[104px]" />
-        <WhiskBowlScene className="absolute left-3 top-[52%] hidden w-[96px] opacity-30 lg:left-14 lg:block" />
-        <WokScene className="absolute bottom-28 left-2 w-[92px] opacity-45 lg:left-8 lg:w-[132px]" />
-        <BoilPotScene className="absolute right-2 top-[18%] w-[68px] opacity-35 lg:right-10 lg:w-[92px]" />
-        <PanFlipScene className="absolute right-3 top-[50%] hidden w-[112px] opacity-30 lg:right-12 lg:block" />
-        <ClocheScene className="absolute bottom-44 right-2 w-[78px] opacity-40 lg:right-10 lg:w-[104px]" />
-        <SprinkleScene className="absolute bottom-[12%] right-[22%] hidden w-[64px] opacity-30 xl:block" />
-      </div>
-
       {/* App bar */}
       <header className="sticky top-0 z-20 -mx-4 flex items-center justify-between border-b border-line/70 bg-ivory/80 px-4 pb-3 pt-4 backdrop-blur-xl md:-mx-7 md:px-7 [animation:fade-up_.5s_ease_both]">
         <div className="flex items-center gap-[10px] font-display text-[22px] font-extrabold tracking-[-0.02em] text-forest-deep">
-          <span className="grid size-[34px] shrink-0 place-items-center rounded-[11px] bg-[linear-gradient(140deg,#16745B,#0E4A38)] text-ivory shadow-[0_8px_20px_-6px_rgba(14,74,56,.55)]">
+          <span className="relative grid size-[34px] shrink-0 place-items-center rounded-[11px] bg-[linear-gradient(140deg,#16745B,#0E4A38)] text-ivory shadow-[0_8px_20px_-6px_rgba(14,74,56,.55)]">
+            {/* steam curling off the brand pot */}
+            <svg
+              className="absolute -top-[13px] left-1/2 h-[13px] w-3 -translate-x-1/2 text-forest/60"
+              viewBox="0 0 12 14"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              aria-hidden
+            >
+              <path className="steam" d="M4 13 c-2 -3 2 -6 0 -9" />
+              <path className="steam" d="M8 13 c-2 -3 2 -6 0 -9" style={{ animationDelay: "1.2s" }} />
+            </svg>
             <span className="size-5"><PotIcon /></span>
           </span>
           ChefCircle
@@ -373,17 +423,29 @@ export default function Home() {
       </header>
 
       {/* Hero */}
-      <div className="relative mb-3 mt-4 text-center [animation:fade-up_.6s_.08s_ease_both]">
-        {/* mini kitchen scenes flanking the hero on mobile */}
-        <WokScene className="absolute -left-1 top-1 -z-10 w-14 text-forest opacity-25 sm:hidden" />
-        <BoilPotScene className="absolute -right-1 top-0 -z-10 w-12 text-forest opacity-25 sm:hidden" />
+      <div className="mb-3 mt-4 text-center [animation:fade-up_.6s_.08s_ease_both]">
         <p className="mb-2 text-[11px] font-bold uppercase tracking-[.24em] text-forest-bright">
           Discover · Lagos &amp; Owerri · Verified
         </p>
         <h1 className="mx-auto max-w-[640px] text-[clamp(26px,6vw,44px)] font-extrabold leading-[1.05] tracking-[-0.02em] text-forest-deep">
           Chefs worth{" "}
-          <span className="bg-[linear-gradient(100deg,#16745B_15%,#C8901F_85%)] bg-clip-text text-transparent">
+          <span className="relative inline-block bg-[linear-gradient(100deg,#16745B_15%,#C8901F_85%)] bg-clip-text text-transparent">
             swiping right
+            <svg
+              className="absolute -bottom-[6px] left-0 h-[10px] w-full"
+              viewBox="0 0 200 12"
+              preserveAspectRatio="none"
+              aria-hidden
+            >
+              <path
+                className="draw-underline"
+                d="M4 8 Q100 1 196 8"
+                stroke="#C8901F"
+                strokeWidth="3.5"
+                fill="none"
+                strokeLinecap="round"
+              />
+            </svg>
           </span>{" "}
           for
         </h1>
@@ -392,12 +454,15 @@ export default function Home() {
         </p>
       </div>
 
-      {/* Dish ticker */}
-      <div className="mb-4 overflow-hidden border-y border-line/80 py-[7px] [animation:fade-up_.6s_.14s_ease_both]" aria-hidden>
-        <div className="ticker-track flex w-max items-center gap-7">
-          {[...TICKER_DISHES, ...TICKER_DISHES].map((dish, i) => (
-            <span key={i} className="flex items-center gap-7 whitespace-nowrap text-[10.5px] font-bold uppercase tracking-[.2em] text-ink-faint">
-              {dish}
+      {/* Kitchen parade: animated scenes and dish names marching through the band */}
+      <div className="mb-4 overflow-hidden border-y border-line/80 py-2 [animation:fade-up_.6s_.14s_ease_both]" aria-hidden>
+        <div className="ticker-track flex w-max items-center gap-8" style={{ animationDuration: "52s" }}>
+          {[...PARADE, ...PARADE].map(([Scene, dish], i) => (
+            <span key={i} className="flex items-center gap-8">
+              <Scene className="h-[52px] w-auto text-forest opacity-60" />
+              <span className="whitespace-nowrap text-[10.5px] font-bold uppercase tracking-[.2em] text-ink-faint">
+                {dish}
+              </span>
               <span className="text-[8px] text-gold">◆</span>
             </span>
           ))}
@@ -526,7 +591,7 @@ export default function Home() {
 
                 <div className="absolute bottom-0 left-0 right-0 z-[3] p-5 text-white">
                   <div className="mb-[10px] inline-flex items-center gap-[5px] rounded-full border border-white/15 bg-black/40 px-3 py-[5px] text-[14px] font-bold backdrop-blur-md">
-                    <span className="size-[14px] text-gold-bright"><StarIcon /></span>
+                    <span className="twinkle size-[14px] text-gold-bright"><StarIcon /></span>
                     {chef.rating}
                   </div>
                   <h2 className="flex flex-wrap items-baseline gap-2 text-[28px] font-extrabold [text-shadow:0_2px_18px_rgba(0,0,0,.5)]">
@@ -538,10 +603,11 @@ export default function Home() {
                   </div>
                   <div className="mt-[1px] text-[13px] text-white/60">{chef.loc}</div>
                   <div className="mt-3 flex flex-wrap gap-[6px]">
-                    {chef.dishes.map((dish) => (
+                    {chef.dishes.map((dish, i) => (
                       <span
                         key={dish}
-                        className="rounded-full border border-white/15 bg-white/10 px-3 py-[5px] text-[12px] font-semibold text-white backdrop-blur-md"
+                        className="rounded-full border border-white/15 bg-white/10 px-3 py-[5px] text-[12px] font-semibold text-white backdrop-blur-md [animation:fade-up_.45s_ease_both]"
+                        style={{ animationDelay: `${0.15 + i * 0.09}s` }}
                       >
                         {dish}
                       </span>
