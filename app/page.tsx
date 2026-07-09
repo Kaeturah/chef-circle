@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Category = "chef" | "baker" | "pastry";
 type Tier = "verified" | "premium" | "casual";
@@ -280,6 +280,206 @@ function GrillSuyaScene({ className }: { className?: string }) {
   );
 }
 
+/* ---------- background vignettes: little stories that pop up around the page ---------- */
+
+/* chef hands a plate across to a customer; a heart pops when it lands */
+function HandoffVignette({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 150 100" className={`scene ${className ?? ""}`} aria-hidden>
+      <g stroke="currentColor" strokeWidth="2.2" fill="none" strokeLinecap="round">
+        {/* chef */}
+        <path d="M24 24 h20" />
+        <path d="M25 24 q0 -9 9.5 -9 q9.5 0 9.5 9" />
+        <circle cx="34" cy="32" r="7" />
+        <path d="M34 39 v24" />
+        <path d="M34 46 l-10 8" />
+        <path d="M34 46 l16 -4" />
+        <path d="M34 63 l-7 13 M34 63 l7 13" />
+        {/* customer */}
+        <path d="M110 30 q6 -7 12 0" />
+        <circle cx="116" cy="34" r="7" />
+        <path d="M116 41 v22" />
+        <path d="M116 48 l-16 -6" />
+        <path d="M116 63 l-7 13 M116 63 l7 13" />
+        {/* the plate making the journey */}
+        <g className="plate-pass">
+          <path d="M49 44 H67" />
+          <path d="M50 44 a8 8 0 0 1 16 0" />
+        </g>
+        {/* the moment lands */}
+        <path className="pop-late" d="M116 14 c-2 -4 -8 -2 -6 3 c1 3 6 7 6 7 c0 0 5 -4 6 -7 c2 -5 -4 -7 -6 -3 Z" />
+      </g>
+    </svg>
+  );
+}
+
+/* chef lifts a spoon from the pot for a taste; sparkle of approval */
+function TasteVignette({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 130 100" className={`scene ${className ?? ""}`} aria-hidden>
+      <g stroke="currentColor" strokeWidth="2.2" fill="none" strokeLinecap="round">
+        <path d="M30 22 h20" />
+        <path d="M31 22 q0 -9 9.5 -9 q9.5 0 9.5 9" />
+        <circle cx="40" cy="30" r="7" />
+        <path d="M40 37 v26" />
+        <path d="M40 63 l-7 13 M40 63 l7 13" />
+        <path d="M40 44 l-11 7" />
+        <g className="taste">
+          <path d="M40 44 L66 52" />
+          <circle cx="69" cy="53" r="3" />
+        </g>
+        {/* pot on the fire */}
+        <path d="M86 56 H122" />
+        <path d="M90 56 v12 q0 6 6 6 h12 q6 0 6 -6 v-12" />
+        <path className="flame" d="M98 82 c2 -6 6 -6 8 0" />
+        <path className="steam" d="M100 50 c-2 -3 2 -6 0 -9" />
+        <path className="steam" d="M110 50 c-2 -3 2 -6 0 -9" style={{ animationDelay: "1.1s" }} />
+        <path className="pop-late" d="M56 24 l5 -4 M58 30 l6 0 M56 18 l4 -5" />
+      </g>
+    </svg>
+  );
+}
+
+/* chef's kiss — fingers to lips, sparkles fly */
+function ChefsKissVignette({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 110 100" className={`scene ${className ?? ""}`} aria-hidden>
+      <g stroke="currentColor" strokeWidth="2.2" fill="none" strokeLinecap="round">
+        <path d="M34 22 h26" />
+        <path d="M35 22 q0 -11 13 -11 q13 0 13 11" />
+        <circle cx="48" cy="33" r="10" />
+        <path d="M48 43 v28" />
+        <path d="M48 52 l-13 9" />
+        <path d="M48 52 L60 40" />
+        <path d="M60 40 l5 -3 M60 40 l6 1" />
+        <path d="M48 71 l-8 15 M48 71 l8 15" />
+        <path className="pop-late" d="M74 30 l7 -5 M77 37 l8 0 M74 23 l6 -6" />
+        <path className="steam" d="M84 46 c-2 -3 2 -6 0 -9" style={{ animationDelay: ".6s" }} />
+      </g>
+    </svg>
+  );
+}
+
+/* the show-off flip: pancake launched high with a full turn */
+function BigFlipVignette({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 130 110" className={`scene ${className ?? ""}`} aria-hidden>
+      <g stroke="currentColor" strokeWidth="2.2" fill="none" strokeLinecap="round">
+        <path d="M26 34 h20" />
+        <path d="M27 34 q0 -9 9.5 -9 q9.5 0 9.5 9" />
+        <circle cx="36" cy="42" r="7" />
+        <path d="M36 49 v24" />
+        <path d="M36 73 l-7 14 M36 73 l7 14" />
+        <path d="M36 56 L58 62" />
+        <path d="M58 62 L74 64" />
+        <path d="M74 64 q10 8 22 0" />
+        <path d="M72 64 H98" />
+        <ellipse className="arc-high" cx="85" cy="58" rx="9" ry="2.6" />
+      </g>
+    </svg>
+  );
+}
+
+/* customer digging in happily, hearts rising */
+function HappyEaterVignette({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 130 100" className={`scene ${className ?? ""}`} aria-hidden>
+      <g stroke="currentColor" strokeWidth="2.2" fill="none" strokeLinecap="round">
+        <path d="M38 36 q6 -7 12 0" />
+        <circle cx="44" cy="40" r="7" />
+        <path d="M44 47 v15" />
+        <g className="peck">
+          <path d="M44 52 L64 57" />
+          <path d="M64 57 l4 -3 M66 59 l4 -2" />
+        </g>
+        <path d="M30 62 H110" />
+        <path d="M38 62 v16 M102 62 v16" />
+        <path d="M74 56 q10 8 20 0" />
+        <path d="M72 56 H96" />
+        <path className="steam" d="M50 28 c-2 -4 -6 -1 -4 2 c1 2 4 4 4 4 c0 0 3 -2 4 -4 c2 -3 -2 -6 -4 -2 Z" />
+        <path className="steam" d="M60 24 c-2 -4 -6 -1 -4 2 c1 2 4 4 4 4 c0 0 3 -2 4 -4 c2 -3 -2 -6 -4 -2 Z" style={{ animationDelay: "1.3s" }} />
+      </g>
+    </svg>
+  );
+}
+
+/* chef hustling off to deliver a cloche, motion lines trailing */
+function DeliveryDashVignette({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 140 95" className={`scene ${className ?? ""}`} aria-hidden>
+      <g stroke="currentColor" strokeWidth="2.2" fill="none" strokeLinecap="round">
+        <path className="dash-slide" d="M14 34 h12" />
+        <path className="dash-slide" d="M8 44 h14" style={{ animationDelay: ".3s" }} />
+        <path className="dash-slide" d="M14 54 h10" style={{ animationDelay: ".6s" }} />
+        <g className="bob">
+          <path d="M38 20 h20" />
+          <path d="M39 20 q0 -9 9.5 -9 q9.5 0 9.5 9" />
+          <circle cx="48" cy="28" r="7" />
+          <path d="M48 35 L42 60" />
+          <path d="M46 42 L68 38" />
+          <path d="M60 38 H88" />
+          <path d="M64 38 a10 10 0 0 1 20 0" />
+          <path d="M74 24 v-3" />
+          <path d="M42 60 l-12 12 M42 60 l16 9" />
+        </g>
+      </g>
+    </svg>
+  );
+}
+
+const VIGNETTES = [
+  HandoffVignette,
+  TasteVignette,
+  BigFlipVignette,
+  HappyEaterVignette,
+  ChefsKissVignette,
+  DeliveryDashVignette,
+];
+
+/* screen slots the vignettes rotate through — edges, bands, corners: everywhere */
+const VIGNETTE_SLOTS: React.CSSProperties[] = [
+  { top: "12%", left: "4%" },
+  { top: "10%", right: "6%" },
+  { top: "40%", left: "2%" },
+  { top: "42%", right: "3%" },
+  { bottom: "20%", left: "6%" },
+  { bottom: "18%", right: "7%" },
+  { top: "5%", left: "40%" },
+  { bottom: "8%", left: "38%" },
+];
+
+function VignetteLayer() {
+  const [shots, setShots] = useState<{ key: number; scene: number; slot: number }[]>([]);
+  const counter = useRef(0);
+
+  useEffect(() => {
+    const spawn = () => {
+      counter.current += 1;
+      const key = counter.current;
+      setShots((prev) => [
+        ...prev.slice(-1), // keep at most two alive
+        { key, scene: key % VIGNETTES.length, slot: (key * 3 + 1) % VIGNETTE_SLOTS.length },
+      ]);
+    };
+    spawn();
+    const interval = window.setInterval(spawn, 5200);
+    return () => window.clearInterval(interval);
+  }, []);
+
+  return (
+    <div aria-hidden className="vignette-layer pointer-events-none fixed inset-0 -z-10 overflow-hidden text-forest">
+      {shots.map((shot) => {
+        const Scene = VIGNETTES[shot.scene];
+        return (
+          <div key={shot.key} className="vignette absolute w-28 opacity-55 sm:w-32" style={VIGNETTE_SLOTS[shot.slot]}>
+            <Scene />
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 /* the kitchen parade: scenes and dish names marching through the ticker band */
 const PARADE: [React.ComponentType<{ className?: string }>, string][] = [
   [WokScene, "Party Jollof"],
@@ -385,6 +585,9 @@ export default function Home() {
 
   return (
     <div className="relative z-[2] mx-auto w-full max-w-[1080px] px-4 pb-36 md:px-7 md:pb-32">
+      {/* Background vignettes: a new little story every ~5s, somewhere on screen */}
+      <VignetteLayer />
+
       {/* App bar */}
       <header className="sticky top-0 z-20 -mx-4 flex items-center justify-between border-b border-line/70 bg-ivory/80 px-4 pb-3 pt-4 backdrop-blur-xl md:-mx-7 md:px-7 [animation:fade-up_.5s_ease_both]">
         <div className="flex items-center gap-[10px] font-display text-[22px] font-extrabold tracking-[-0.02em] text-forest-deep">
